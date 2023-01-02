@@ -95,8 +95,12 @@ const IncorporationPage = () => {
           <div className={styles.mainContainer}>
             <main className={styles.mainContent}>
               <div />
-              {activeStageId === StagesEnum.Draft ? (
-                <FormStages activeStageId={activeStageId} stages={stages} />
+              {activeStageId === StagesEnum.Draft && colonyData ? (
+                <FormStages
+                  activeStageId={activeStageId}
+                  stages={stages}
+                  colony={colonyData?.processedColony}
+                />
               ) : (
                 <Stages
                   activeStageId={activeStageId}
