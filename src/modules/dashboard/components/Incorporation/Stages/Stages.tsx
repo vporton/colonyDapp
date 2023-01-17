@@ -33,7 +33,8 @@ export interface Props {
   stages: StageObject[];
   activeStageId: StagesEnum;
   buttonDisabled?: boolean;
-  buttonAction?: VoidFunction;
+  buttonAction?: (values?: ValuesType) => void;
+  handleDeleteDraft?: VoidFunction;
 }
 
 const Stages = ({
@@ -41,6 +42,7 @@ const Stages = ({
   activeStageId,
   buttonDisabled,
   buttonAction,
+  handleDeleteDraft,
 }: Props) => {
   const [valueIsCopied, setValueIsCopied] = useState(false);
   const userFeedbackTimer = useRef<any>(null);
@@ -82,7 +84,14 @@ const Stages = ({
                 />
               </div>
             </Button>
-            <Button className={styles.iconButton}>
+            <Button
+              className={styles.iconButton}
+              onClick={
+                activeStageId === StagesEnum.Draft
+                  ? handleDeleteDraft
+                  : () => {}
+              }
+            >
               <div className={styles.iconWrapper}>
                 <Icon
                   name="trash"
