@@ -6,3 +6,5 @@ export const wrapper: string;
 export const spinnerContainer: string;
 export const mainContainer: string;
 export const mainContent: string;
+export const tagWrapper: string;
+export const titleCommentsContainer: string;

@@ -8,7 +8,6 @@ import { getMainClasses } from '~utils/css';
 import { SpinnerLoader } from '~core/Preloaders';
 import Stages, { FormStages } from '~dashboard/Incorporation/Stages';
 import IncorporationForm from '~dashboard/Incorporation/IncorporationForm';
-import Stages, { FormStages } from '~dashboard/Incorporation/Stages';
 import LockedIncorporationForm from '~dashboard/Incorporation/IncorporationForm/LockedIncorporationForm';
 import { useDialog } from '~core/Dialog';
 import EditButtons from '~dashboard/ExpenditurePage/EditButtons/EditButtons';
