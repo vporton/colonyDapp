@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 import * as yup from 'yup';
 
 import { SignOption } from '~dashboard/Incorporation/IncorporationForm/constants';
+import { UserProfile } from '~data/index';
 
 import { StageObject } from './types';
 
@@ -167,3 +168,19 @@ export const stages: StageObject[] = [
   },
   { id: Stages.Complete, title: MSG.complete, description: MSG.completeDesc },
 ];
+
+export const ownerMock: Pick<
+  UserProfile,
+  | 'displayName'
+  | 'avatarHash'
+  | 'walletAddress'
+  | 'username'
+  | 'bio'
+  | 'location'
+  | 'website'
+> = {
+  avatarHash: null,
+  displayName: null,
+  username: 'ajarosik',
+  walletAddress: '0xb77D57F4959eAfA0339424b83FcFaf9c15407461',
+};

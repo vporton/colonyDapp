@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { RouteChildrenProps, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { Formik, FormikErrors } from 'formik';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
@@ -19,12 +19,14 @@ import {
   MotionType,
 } from '~dashboard/ExpenditurePage/Stages/constants';
 import { Motion } from '~pages/ExpenditurePage/types';
+import { useLoggedInUser } from '~data/helpers';
 
 import {
   initialValues,
   stages,
   validationSchema,
   Stages as StagesEnum,
+  ownerMock,
 } from './constants';
 import { findDifferences, updateValues } from './utils';
 import { ValuesType } from './types';
@@ -64,8 +66,16 @@ const IncorporationPage = () => {
     variables: { name: colonyName, address: '' },
   });
 
+  const { walletAddress } = useLoggedInUser();
+
+  const isOwner = useMemo(
+    () => formValues?.owner?.walletAddress === walletAddress,
+    [formValues, walletAddress],
+  );
+
   const handleSubmit = useCallback((values) => {
-    setFormValues(values);
+    // we temporarily store the mock owner in the formValues
+    setFormValues({ ...values, owner: ownerMock });
     setFormEditable(false);
     setActiveStageId(StagesEnum.Created);
   }, []);
@@ -106,21 +116,26 @@ const IncorporationPage = () => {
       setInEditMode(false);
       setFormEditable(false);
 
+      const data = updateValues(formValues, confirmedValues);
+
+      if (isOwner) {
+        setFormValues(data);
+        return;
+      }
+
       if (isForced) {
-        const data = updateValues(formValues, confirmedValues);
         // call to backend to set new values goes here, setting state is temorary
         setFormValues(data);
       } else {
         setMotion({ type: MotionType.Edit, status: MotionStatus.Pending });
         // setTimeout is temporary, it should be replaced with call to api
         setTimeout(() => {
-          const data = updateValues(formValues, confirmedValues);
           setMotion({ type: MotionType.Edit, status: MotionStatus.Passed });
           setFormValues(data);
         }, 3000);
       }
     },
-    [formValues],
+    [formValues, isOwner],
   );
 
   const handleEditLockedForm = useCallback(() => {
@@ -157,6 +172,7 @@ const IncorporationPage = () => {
           colony: colonyData?.processedColony,
           newValues: differentValues,
           oldValues: oldValues.current,
+          isOwner,
         })
       );
     },
@@ -164,6 +180,7 @@ const IncorporationPage = () => {
       colonyData,
       handleConfirmEition,
       handleEditCancel,
+      isOwner,
       openEditIncorporationDialog,
     ],
   );
@@ -187,7 +204,7 @@ const IncorporationPage = () => {
             ) : (
               colonyData && (
                 <>
-                  {inEditMode && (
+                  {inEditMode && !isOwner && (
                     <div className={styles.tagWrapper}>
                       <Tag>
                         <FormattedMessage {...MSG.editMode} />
