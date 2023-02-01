@@ -113,37 +113,41 @@ const LockedProtectors = ({ formValues }: Props) => {
           );
         })}
       </FormSection>
-      <FormSection appearance={{ border: 'bottom' }}>
-        <div className={styles.mainContactRow}>
-          <div className={styles.labelWrapper}>
-            <InputLabel label={MSG.mainContact} />
-            <QuestionMarkTooltip tooltipText={MSG.mainContactTooltip} />
-          </div>
-          <div className={styles.userAvatarContainer}>
-            <UserAvatar
-              address={formValues.mainContact?.profile.walletAddress || ''}
-              size="xs"
-              notSet={false}
-            />
-            <div className={styles.userName}>
-              <UserMention
-                username={formValues.mainContact?.profile.username || ''}
-              />
+      {formValues.protectors && formValues.protectors?.length > 1 && (
+        <>
+          <FormSection appearance={{ border: 'bottom' }}>
+            <div className={styles.mainContactRow}>
+              <div className={styles.labelWrapper}>
+                <InputLabel label={MSG.mainContact} />
+                <QuestionMarkTooltip tooltipText={MSG.mainContactTooltip} />
+              </div>
+              <div className={styles.userAvatarContainer}>
+                <UserAvatar
+                  address={formValues.mainContact?.profile.walletAddress || ''}
+                  size="xs"
+                  notSet={false}
+                />
+                <div className={styles.userName}>
+                  <UserMention
+                    username={formValues.mainContact?.profile.username || ''}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </FormSection>
-      <FormSection appearance={{ border: 'bottom' }}>
-        <div className={styles.signOptionWrapper}>
-          <div className={styles.labelWrapper}>
-            <InputLabel label={MSG.signing} />
-            <QuestionMarkTooltip tooltipText={MSG.signOptionTooltip} />
-          </div>
-          <div className={styles.signing}>
-            <FormattedMessage {...signLabel} />
-          </div>
-        </div>
-      </FormSection>
+          </FormSection>
+          <FormSection appearance={{ border: 'bottom' }}>
+            <div className={styles.signOptionWrapper}>
+              <div className={styles.labelWrapper}>
+                <InputLabel label={MSG.signing} />
+                <QuestionMarkTooltip tooltipText={MSG.signOptionTooltip} />
+              </div>
+              <div className={styles.signing}>
+                <FormattedMessage {...signLabel} />
+              </div>
+            </div>
+          </FormSection>
+        </>
+      )}
     </>
   );
 };

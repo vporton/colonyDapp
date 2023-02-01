@@ -1,12 +1,15 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { Formik } from 'formik';
+import classNames from 'classnames';
 
 import { useColonyFromNameQuery } from '~data/generated';
 import { getMainClasses } from '~utils/css';
 import { SpinnerLoader } from '~core/Preloaders';
 import Stages, { FormStages } from '~dashboard/Incorporation/Stages';
 import IncorporationForm from '~dashboard/Incorporation/IncorporationForm';
+import LockedIncorporationForm from '~dashboard/Incorporation/IncorporationForm/LockedIncorporationForm';
+import InfoBanner from '~dashboard/Incorporation/InfoBanner';
 
 import {
   initialValues,
@@ -14,13 +17,10 @@ import {
   validationSchema,
   Stages as StagesEnum,
 } from './constants';
-import styles from './IncorporationPage.css';
 import { ValuesType } from './types';
-import LockedIncorporationForm from '~dashboard/Incorporation/IncorporationForm/LockedIncorporationForm';
+import styles from './IncorporationPage.css';
 
 const displayName = 'pages.IncorporationPage';
-
-export type InitialValuesType = typeof initialValues;
 
 const IncorporationPage = () => {
   const { colonyName } = useParams<{
@@ -44,6 +44,11 @@ const IncorporationPage = () => {
 
   const handlePay = useCallback(() => {
     setActiveStageId(StagesEnum.Processing);
+
+    // mock
+    setTimeout(() => {
+      setActiveStageId(StagesEnum.Complete);
+    }, 10000);
   }, []);
 
   const buttonAction = useMemo(() => {
@@ -132,7 +137,15 @@ const IncorporationPage = () => {
           )
         )}
       </aside>
-      <div className={styles.mainContainer}>
+      <div
+        className={classNames(styles.mainContainer, {
+          [styles.smallerPadding]: activeStageId === StagesEnum.Processing,
+        })}
+      >
+        {(activeStageId === StagesEnum.Processing ||
+          activeStageId === StagesEnum.Complete) && (
+          <InfoBanner activeStageId={activeStageId} />
+        )}
         <main className={styles.mainContent}>
           <div />
           <Stages
