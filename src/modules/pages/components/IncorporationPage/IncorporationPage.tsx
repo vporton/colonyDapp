@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import { Formik } from 'formik';
 import classNames from 'classnames';
 
@@ -16,6 +16,7 @@ import {
   stages,
   validationSchema,
   Stages as StagesEnum,
+  formValuesMock,
 } from './constants';
 import { ValuesType } from './types';
 import styles from './IncorporationPage.css';
@@ -26,10 +27,11 @@ const IncorporationPage = () => {
   const { colonyName } = useParams<{
     colonyName: string;
   }>();
-  const [isFormEditable, setFormEditable] = useState(true);
-  const [formValues, setFormValues] = useState<ValuesType>();
+  const history = useHistory();
+  const [isFormEditable, setFormEditable] = useState(false);
+  const [formValues, setFormValues] = useState<ValuesType>(formValuesMock);
   const [shouldValidate, setShouldValidate] = useState(false);
-  const [activeStageId, setActiveStageId] = useState(StagesEnum.Draft);
+  const [activeStageId, setActiveStageId] = useState(StagesEnum.Payment);
   const sidebarRef = useRef<HTMLElement>(null);
 
   const handleSubmit = useCallback((values) => {
@@ -44,12 +46,10 @@ const IncorporationPage = () => {
 
   const handlePay = useCallback(() => {
     setActiveStageId(StagesEnum.Processing);
-
-    // mock
-    setTimeout(() => {
-      setActiveStageId(StagesEnum.Complete);
-    }, 10000);
-  }, []);
+    // Redirection to the Actions page is a mock action.
+    const txHash = 'DAOIncorporation';
+    history.push(`/colony/${colonyName}/tx/${txHash}`);
+  }, [colonyName, history]);
 
   const buttonAction = useMemo(() => {
     switch (activeStageId) {
