@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import Button from '~core/Button';
 import Icon from '~core/Icon';
-import { StageObject } from '~pages/IncorporationPage/types';
+import { StageObject, ValuesType } from '~pages/IncorporationPage/types';
 import { Stages as StagesEnum } from '~pages/IncorporationPage/constants';
 
 import StageItem from './StageItem';
