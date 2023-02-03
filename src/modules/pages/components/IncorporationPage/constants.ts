@@ -2,9 +2,9 @@ import { nanoid } from 'nanoid';
 import { defineMessages } from 'react-intl';
 import * as yup from 'yup';
 
-import { SignOption } from '~dashboard/Incorporation/IncorporationForm/types';
+import { SignOption } from '~dashboard/Incorporation/IncorporationForm/constants';
 
-import { StageObject } from './types';
+import { StageObject, ValuesType } from './types';
 
 const MSG = defineMessages({
   create: {
